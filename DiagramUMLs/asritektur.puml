@@ -1,0 +1,43 @@
+@startuml
+title Arsitektur Sistem Informasi Suhu & Cuaca Berbasis Web
+
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+actor "Admin / User" as User
+
+package "Client Side" {
+  component "Web Browser" 
+  component "React.js\nFrontend UI" as React
+}
+
+package "Server Side" {
+  component "Node.js\nExpress.js API" as API
+  component "Auth Service\nJWT" as Auth
+  component "Weather Service\n(OpenWeather API)" as Weather
+  component "Sensor Service" as SensorService
+}
+
+package "IoT Layer" {
+  component "Temperature Sensor\n(DHT11/DHT22)" as Sensor
+  component "IoT Device\n(ESP32)" as IoT
+}
+
+package "Database Layer" {
+  database "MySQL" as DB
+}
+
+User --> React : Akses Web
+React --> API : Request REST API
+API --> Auth : Validasi Login
+API --> Weather : Request Data Cuaca
+API --> SensorService : Proses Data Sensor
+SensorService --> DB : Simpan / Ambil Data
+Weather --> API : Data Cuaca
+API --> React : Response JSON
+React --> User : Tampilkan Data
+
+IoT --> API : Kirim Data Sensor
+API --> DB : Simpan Log Sensor
+
+@enduml

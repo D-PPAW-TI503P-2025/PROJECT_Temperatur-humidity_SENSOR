@@ -1,0 +1,21 @@
+@startuml
+title Activity Diagram - Login
+
+|User / Admin|
+start
+:Buka halaman login;
+:Input username & password;
+
+|System|
+:Validasi data login;
+
+if (Login valid?) then (Ya)
+  :Generate session / token;
+  :Arahkan ke dashboard;
+else (Tidak)
+  :Kirim pesan gagal;
+endif
+
+|User / Admin|
+stop
+@enduml

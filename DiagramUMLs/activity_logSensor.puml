@@ -1,0 +1,20 @@
+@startuml
+title Activity Diagram - Lihat Log Sensor
+
+|Admin|
+start
+:Login;
+:Pilih menu log sensor;
+
+|Sistem|
+:Ambil data sensor;
+
+|Database|
+:Query log sensor;
+
+|Sistem|
+:Tampilkan riwayat data;
+
+|Admin|
+stop
+@enduml

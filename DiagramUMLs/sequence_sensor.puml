@@ -1,0 +1,16 @@
+@startuml
+title Sequence Diagram
+title Pengiriman Data Sensor
+
+participant "IoT Device" as IoT
+participant "Backend API" as API
+database DB
+
+IoT -> IoT : Baca Sensor
+IoT -> API : Kirim Data
+API -> API : Validasi API Key
+API -> DB : Simpan Sensor Log
+DB --> API : OK
+API --> IoT : Success
+
+@enduml

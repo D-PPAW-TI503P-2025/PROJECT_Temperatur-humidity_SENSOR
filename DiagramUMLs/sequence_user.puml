@@ -1,0 +1,30 @@
+@startuml
+title Sequence Diagram
+title Login & Monitoring Cuaca
+
+actor User
+participant "React Frontend" as React
+participant "Backend API" as API
+database DB
+
+User -> React : Akses Dashboard
+React -> API : Request data
+API -> API : Validasi JWT
+
+alt Belum Login
+  API --> React : 401 Unauthorized
+  React -> User : Tampilkan Login
+  User -> React : Input Login
+  React -> API : POST /login
+  API -> DB : Validasi User
+  DB --> API : Valid
+  API --> React : Token JWT
+end
+
+React -> API : Request Data Cuaca
+API -> DB : Ambil Data
+DB --> API : Data
+API --> React : JSON
+React -> User : Tampilkan Cuaca
+
+@enduml

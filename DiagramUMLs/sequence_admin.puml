@@ -1,0 +1,68 @@
+@startuml
+title Sequence Diagram
+title Aktivitas Admin Sistem Informasi Suhu & Cuaca
+
+actor Admin
+participant "React Frontend" as React
+participant "Backend API" as API
+participant "Weather API\n(OpenWeather)" as Weather
+database DB
+
+Admin -> React : Akses Admin Dashboard
+React -> API : Request Admin Data
+API -> API : Validasi JWT & Role Admin
+
+alt Tidak Terautentikasi / Bukan Admin
+  API --> React : 403 Forbidden
+  React -> Admin : Redirect ke Login
+  Admin -> React : Input Login
+  React -> API : POST /login
+  API -> DB : Validasi Admin
+  DB --> API : Admin Valid
+  API --> React : Token JWT
+end
+
+== Monitoring Cuaca ==
+React -> API : Request Cuaca Saat Ini
+API -> Weather : Request Current Weather
+Weather --> API : Data Cuaca
+API --> React : JSON Cuaca
+
+React -> API : Request Forecast 5 Hari
+API -> Weather : Request Forecast
+Weather --> API : Data Forecast
+API --> React : JSON Forecast
+
+== Lokasi Geografis ==
+React -> API : Request Koordinat Kota/Negara
+API -> Weather : Request Geo Location
+Weather --> API : Data Lokasi
+API --> React : JSON Lokasi
+
+== Log Sensor ==
+React -> API : Request Log Sensor
+API -> DB : Query Sensor Log
+DB --> API : Data Log
+API --> React : JSON Log
+
+== Kelola User ==
+React -> API : Request Data User
+API -> DB : Ambil Data User
+DB --> API : Data User
+API --> React : JSON User
+
+alt Edit User
+  React -> API : PUT /user/{id}
+  API -> DB : Update User
+  DB --> API : Success
+  API --> React : OK
+end
+
+alt Hapus User
+  React -> API : DELETE /user/{id}
+  API -> DB : Delete User
+  DB --> API : Success
+  API --> React : OK
+end
+
+@enduml

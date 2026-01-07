@@ -1,0 +1,99 @@
+@startuml
+title Class Diagram
+title Sistem Informasi Suhu Cuaca Berbasis Web
+
+skinparam classAttributeIconSize 0
+skinparam style strictuml
+
+' =========================
+' USER & ROLE
+' =========================
+class User {
+  - userId : int
+  - username : string
+  - password : string
+  - role : string
+  + login()
+  + register()
+  + logout()
+  
+}
+
+class Admin {
+  + manageUser()
+  + viewSensorLogs()
+}
+
+Admin --|> User
+
+' =========================
+' AUTHENTICATION
+' =========================
+class AuthService {
+  + authenticate(username, password)
+  + generateToken(user)
+}
+
+User --> AuthService : login
+
+' =========================
+' WEATHER (CUACA GLOBAL)
+' =========================
+class WeatherService {
+  + getCurrentWeather(city)
+  + getForecast(city)
+  + getGeoLocation(city)
+}
+
+class WeatherData {
+  - country : string
+  - city : string
+  - temperature : float
+  - humidity : float
+  - forecast5Days : string
+  - latitude : float
+  - longitude : float
+}
+
+User --> WeatherService : request
+WeatherService --> WeatherData : produces
+
+' =========================
+' SENSOR & IOT
+' =========================
+class IoTDevice {
+  - deviceId : int
+  - apiKey : string
+  + sendData()
+}
+
+class SensorService {
+  + receiveSensorData()
+  + getSensorLogs()
+}
+
+class SensorData {
+  - dataId : int
+  - temperature : float
+  - timestamp : datetime
+}
+
+IoTDevice --> SensorService : send
+SensorService --> SensorData : create
+IoTDevice "1" --> "0..*" SensorData
+
+Admin --> SensorService : view
+
+' =========================
+' DATABASE
+' =========================
+class Database {
+  + connect()
+  + query()
+}
+
+SensorService --> Database : store/read
+WeatherService --> Database : store/read
+AuthService --> Database : validate
+
+@enduml

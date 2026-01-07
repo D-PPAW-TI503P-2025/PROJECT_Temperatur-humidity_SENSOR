@@ -1,0 +1,16 @@
+@startuml
+title Activity Diagram - Lihat Forecast Cuaca 5 Hari
+
+|Admin|
+start
+:Login;
+:Pilih negara & kota;
+
+|Sistem|
+:Request forecast 5 hari;
+:Ambil data forecast;
+
+|Admin|
+:Lihat hasil forecast;
+stop
+@enduml

@@ -1,0 +1,18 @@
+@startuml
+title Activity Diagram - Kirim Data Sensor
+
+|IoT Device|
+start
+:Baca sensor temperatur;
+
+|Sistem|
+:Terima data sensor;
+:Validasi data;
+
+|Database|
+:Simpan data sensor;
+
+|IoT Device|
+:Terima respon sukses;
+stop
+@enduml

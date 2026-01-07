@@ -1,0 +1,16 @@
+@startuml
+title Activity Diagram - Lihat Cuaca Negara/Kota
+
+|User|
+start
+:Login;
+:Pilih negara & kota;
+
+|Sistem|
+:Request data cuaca;
+:Ambil data dari API cuaca;
+
+|User|
+:Lihat cuaca saat ini;
+stop
+@enduml

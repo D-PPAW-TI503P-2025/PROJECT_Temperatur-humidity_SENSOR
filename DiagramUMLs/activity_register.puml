@@ -1,0 +1,21 @@
+@startuml
+title Activity Diagram - Register
+
+|User/Admin|
+start
+:Buka halaman register;
+:Input data pendaftaran;
+
+|System|
+:Validasi data;
+
+if (Data valid?) then (Ya)
+  :Simpan data user/admin;
+  :Registrasi berhasil;
+else (Tidak)
+  :Kirim pesan error;
+endif
+
+|User/Admin|
+stop
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+title Activity Diagram - Kelola User
+
+|Admin|
+start
+:Login;
+:Pilih menu kelola user;
+
+if (Aksi?) then (Tambah)
+  :Input data user baru;
+
+  |Sistem|
+  :Validasi data;
+
+  |Database|
+  :Simpan user;
+
+elseif (Edit)
+  :Pilih user;
+  :Ubah data;
+
+  |Database|
+  :Update data user;
+
+else (Hapus)
+  :Pilih user;
+
+  |Database|
+  :Hapus data user;
+endif
+
+|Admin|
+:Kembali ke dashboard;
+stop
+@enduml

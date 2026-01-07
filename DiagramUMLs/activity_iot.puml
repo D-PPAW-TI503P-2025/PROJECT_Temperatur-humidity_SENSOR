@@ -1,0 +1,20 @@
+@startuml
+title Activity Diagram - IoT Device
+title Sistem Informasi Suhu & Cuaca
+
+|IoT Device|
+start
+:Baca sensor suhu;
+
+|IoT Device|
+:Kirim data suhu ke server;
+
+|System|
+:Validasi data sensor;
+:Simpan ke database;
+
+|IoT Device|
+:Terima response sukses;
+
+stop
+@enduml

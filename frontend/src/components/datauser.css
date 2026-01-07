@@ -1,0 +1,294 @@
+/* ===========================
+   GLOBAL RESET
+=========================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===========================
+   BACKGROUND AWAN (SAMA SEPERTI LOGIN)
+=========================== */
+body, html, #root {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.page-container {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #87CEFA, #f0f9ff);
+}
+
+/* Awan */
+.weather-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* DIPERTAHANKAN */
+  pointer-events: none; /* ➜ Supaya awan tidak mengganggu klik */
+}
+
+.cloud {
+  background: white;
+  position: absolute;
+  width: 120px;
+  height: 60px;
+  border-radius: 60px 60px 0 0;
+  filter: blur(1px);
+  animation: float 30s linear infinite;
+  opacity: 0.7; /* supaya tabel terlihat jelas */
+}
+
+.cloud::before {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 50%;
+  top: -20px;
+  left: 20px;
+}
+
+.cloud::after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: white;
+  border-radius: 50%;
+  top: -10px;
+  right: 10px;
+}
+
+.cloud1 { top: 10%; left: -150px; animation-delay: 0s; }
+cloud2 { top: 45%; left: -200px; width: 160px; height: 80px; animation-delay: 5s; }
+.cloud3 { top: 70%; left: -180px; animation-delay: 10s; }
+.cloud4 { top: 25%; left: -120px; width: 100px; height: 50px; animation-delay: 15s; }
+.cloud5 { top: 60%; left: -250px; width: 140px; height: 70px; animation-delay: 20s; }
+.cloud6 { top: 35%; left: -300px; width: 180px; height: 90px; animation-delay: 25s; }
+
+@keyframes float {
+  from { transform: translateX(0); }
+  to { transform: translateX(1500px); }
+}
+
+/* ===========================
+   NAVBAR
+=========================== */
+.navbar {
+  width: 100%;
+  padding: 14px 40px;
+  background: #0e4a86;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 20; /* tetap */
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.navbar .logo {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.navbar ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+.navbar ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.navbar ul li a:hover {
+  color: #bde6ff;
+}
+
+.navbar ul li a.active {
+  border-bottom: 2px solid #bde6ff;
+  padding-bottom: 3px;
+}
+
+/* tombol logout */
+.logout-btn {
+  background: #ff5757;
+  padding: 7px 16px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logout-btn:hover {
+  background: #ff3030;
+}
+
+/* ===========================
+   CONTENT
+=========================== */
+.content {
+  position: relative;
+  z-index: 5; /* dinaikkan supaya di atas awan */
+  padding: 30px;
+}
+
+.content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0e4a86;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* ===========================
+   TABLE WRAPPER
+=========================== */
+.table-container {
+  width: 95%;
+  max-width: 900px;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 25px;
+  border-radius: 15px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  position: relative;
+  z-index: 10; /* supaya tabel tidak tertutup awan */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th {
+  background: #0e4a86;
+  color: white;
+  padding: 12px;
+  font-size: 15px;
+}
+
+table td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:hover {
+  background: #e8f4ff;
+}
+
+.delete-btn {
+  background: #ff3333;
+  color: white;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.delete-btn:hover {
+  background: #d60000;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+@media (max-width: 700px) {
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .navbar ul {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .table-container {
+    width: 98%;
+    padding: 15px;
+  }
+
+  table td,
+  table th {
+    font-size: 13px;
+    text-align: center;
+  }
+}
+
+/* ===========================
+   MODAL EDIT
+=========================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* dinaikkan agar selalu di atas */
+}
+
+.modal-box {
+  background: white;
+  padding: 25px;
+  width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.modal-box h3 {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.modal-box input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.save-btn {
+  background: #0e4a86;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background: #ffaa00;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 6px;
+  color: black;
+  cursor: pointer;
+}

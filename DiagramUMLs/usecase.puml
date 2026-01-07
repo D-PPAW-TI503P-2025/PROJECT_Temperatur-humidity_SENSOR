@@ -1,0 +1,56 @@
+@startuml
+title Use Case Diagram
+title Sistem Informasi Suhu & Cuaca
+
+left to right direction
+
+actor Admin
+actor User
+actor "IoT Device" as IoT
+
+rectangle "Sistem Informasi Cuaca" {
+
+  usecase "Login" as UC_Login
+  usecase "Register" as UC_Register
+
+  usecase "Lihat Cuaca Saat Ini" as UC_Current
+  usecase "Lihat Cuaca Negara/Kota" as UC_Country
+  usecase "Lihat Forecast 5 Hari" as UC_Forecast
+  usecase "Lihat Lokasi Geografis" as UC_Map
+  usecase "Lihat Log Sensor" as UC_Log
+
+  usecase "Kelola User" as UC_ManageUser
+  usecase "Edit User" as UC_EditUser
+  usecase "Hapus User" as UC_DeleteUser
+
+  usecase "Kirim Data Sensor" as UC_Send
+}
+
+' ===== RELASI AKTOR =====
+Admin --> UC_Current
+Admin --> UC_Country
+Admin --> UC_Forecast
+Admin --> UC_Map
+Admin --> UC_Log
+Admin --> UC_ManageUser
+Admin --> UC_Register
+
+User --> UC_Current
+User --> UC_Register
+
+IoT --> UC_Send
+
+' ===== SEMUA AKSES USER & ADMIN WAJIB LOGIN =====
+UC_Current ..> UC_Login : <<include>>
+UC_Country ..> UC_Login : <<include>>
+UC_Forecast ..> UC_Login : <<include>>
+UC_Map ..> UC_Login : <<include>>
+UC_Log ..> UC_Login : <<include>>
+UC_ManageUser ..> UC_Login : <<include>>
+UC_Register ..> UC_Login : <<exclude>>
+
+' ===== DETAIL KELOLA USER =====
+UC_ManageUser ..> UC_EditUser : <<include>>
+UC_ManageUser ..> UC_DeleteUser : <<include>>
+
+@enduml

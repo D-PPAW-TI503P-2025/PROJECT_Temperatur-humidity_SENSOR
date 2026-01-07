@@ -1,0 +1,47 @@
+@startuml
+title Flowchart Sistem Informasi Suhu & Cuaca Berbasis Web
+
+start
+
+:User mengakses website;
+
+if (Sudah login?) then (Ya)
+else (Tidak)
+  :Tampilkan halaman Login / Register;
+
+  if (Pilih Register?) then (Ya)
+    :Input data registrasi;
+    :Simpan data user;
+  endif
+
+  :Input username & password;
+  :Validasi login;
+endif
+
+if (Role = Admin?) then (Admin)
+
+  :Masuk Dashboard Admin;
+
+  fork
+    :Monitoring suhu sensor;
+    :Lihat riwayat log sensor;
+  fork again
+    :Cari negara & kota;
+    :Lihat cuaca saat ini;
+    :Lihat prakiraan cuaca 5 hari;
+    :Lihat lokasi geografis;
+  fork again
+    :Kelola user (CRUD);
+  end fork
+
+else (User)
+
+  :Masuk Dashboard User;
+  :Cari negara & kota;
+  :Lihat cuaca saat ini;
+
+endif
+
+:Logout;
+stop
+@enduml

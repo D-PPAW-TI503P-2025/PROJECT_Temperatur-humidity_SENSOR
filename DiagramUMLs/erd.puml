@@ -1,0 +1,37 @@
+@startuml
+title ERD Sistem Monitoring IoT (Users & Sensor Logs)
+
+' Pengaturan tampilan agar lebih profesional
+skinparam linetype ortho
+skinparam shadowing false
+skinparam class {
+    BackgroundColor White
+    ArrowColor #2688d4
+    BorderColor #2688d4
+}
+
+entity "Users" as User {
+  * **id_user** : INT <<PK>> <<AI>>
+  --
+  nama_lengkap : VARCHAR(100)
+  email : VARCHAR(100) <<UNIQUE>>
+  password : VARCHAR(255)
+  role : ENUM('admin', 'warga')
+  createdAt : DATETIME
+  updatedAt : DATETIME
+}
+
+entity "Sensor_Log" as Sensor {
+  * **id** : INT <<PK>> <<AI>>
+  --
+  suhu : FLOAT
+  kelembaban : FLOAT
+  cahaya : INT
+  createdAt : DATETIME
+  updatedAt : DATETIME
+}
+
+' Relasi: User memantau log sensor
+User ||--o{ Sensor : "memantau"
+
+@enduml

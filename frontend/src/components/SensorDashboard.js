@@ -13,33 +13,43 @@ import {
 import "./sensorDashboard.css";
 
 // ===== REGISTER CHART =====
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Legend, Tooltip, Title);
+ChartJS.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Legend,
+  Tooltip,
+  Title
+);
 
-// ===== API LOKAL =====
-const API_BASE = "http://172.26.22.194:3001"; // IP backend sesuai ipconfig
+// ===== API =====
+const API_BASE = "http://172.26.22.194:3001";
 const HEADERS = { "Content-Type": "application/json" };
 
 export default function SensorDashboard() {
-  const [sensorData, setSensorData] = useState({ suhu: 0, kelembaban: 0, cahaya: 0 });
+  const [sensorData, setSensorData] = useState({
+    suhu: 0,
+    kelembaban: 0
+  });
+
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchAllData = useCallback(async () => {
     try {
-      // ===== HISTORY =====
-      const historyRes = await fetch(`${API_BASE}/api/iot/history`, { headers: HEADERS });
-      const historyJson = await historyRes.json();
-      const historyData = Array.isArray(historyJson.data) ? historyJson.data : [];
-      setHistory(historyData);
+      const res = await fetch(`${API_BASE}/api/iot/history`, { headers: HEADERS });
+      const json = await res.json();
+      const data = Array.isArray(json.data) ? json.data : [];
 
-      // ===== DATA TERBARU =====
-      if (historyData.length > 0) {
-        const latest = historyData[historyData.length - 1]; // ambil data terakhir
+      setHistory(data);
+
+      if (data.length > 0) {
+        const latest = data[data.length - 1];
         setSensorData({
           suhu: Number(latest.suhu) || 0,
-          kelembaban: Number(latest.kelembaban) || 0, // SESUAI DB
-          cahaya: Number(latest.cahaya) || 0,
+          kelembaban: Number(latest.kelembaban) || 0
         });
       }
 
@@ -54,31 +64,46 @@ export default function SensorDashboard() {
 
   useEffect(() => {
     fetchAllData();
-    const interval = setInterval(fetchAllData, 5000); // refresh tiap 5 detik
+    const interval = setInterval(fetchAllData, 5000);
     return () => clearInterval(interval);
   }, [fetchAllData]);
 
-  // ===== DATA UNTUK CHART =====
+  // ===== DATA CHART =====
   const chartData = {
-    labels: history.map(item => new Date(item.createdAt).toLocaleTimeString('id-ID', {
-      hour:'2-digit', minute:'2-digit', second:'2-digit'
-    })),
+    labels: history.map(item =>
+      new Date(item.createdAt).toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      })
+    ),
     datasets: [
-      { label: "Suhu (°C)", data: history.map(item => Number(item.suhu) || 0), tension: 0.3, yAxisID: 'y' },
-      { label: "Kelembapan (%)", data: history.map(item => Number(item.kelembaban) || 0), tension: 0.3, yAxisID: 'y' },
-      { label: "Cahaya (LDR)", data: history.map(item => Number(item.cahaya) || 0), tension: 0.3, yAxisID: 'y1' }
+      {
+        label: "Suhu (°C)",
+        data: history.map(item => Number(item.suhu) || 0),
+        tension: 0.3
+      },
+      {
+        label: "Kelembapan (%)",
+        data: history.map(item => Number(item.kelembaban) || 0),
+        tension: 0.3
+      }
     ]
   };
 
   const chartOptions = {
     responsive: true,
     plugins: {
-      legend: { position: 'top' },
-      title: { display: true, text: 'Monitoring Suhu, Kelembapan & Cahaya' }
+      legend: { position: "top" },
+      title: {
+        display: true,
+        text: "Monitoring Suhu & Kelembapan"
+      }
     },
     scales: {
-      y: { position: 'left', title: { display: true, text: 'Suhu / Kelembapan' } },
-      y1: { position: 'right', title: { display: true, text: 'Cahaya (LDR)' }, grid: { drawOnChartArea: false } }
+      y: {
+        title: { display: true, text: "Nilai Sensor" }
+      }
     }
   };
 
@@ -109,13 +134,10 @@ export default function SensorDashboard() {
             <h3>Suhu Terakhir</h3>
             <p>{sensorData.suhu.toFixed(1)} °C</p>
           </div>
+
           <div className="card">
             <h3>Kelembapan Terakhir</h3>
             <p>{sensorData.kelembaban.toFixed(1)} %</p>
-          </div>
-          <div className="card">
-            <h3>Cahaya Terakhir</h3>
-            <p>{sensorData.cahaya}</p>
           </div>
         </div>
 
